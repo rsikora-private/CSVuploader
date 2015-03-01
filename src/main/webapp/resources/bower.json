@@ -1,0 +1,14 @@
+{
+  "name": "resources",
+  "version": "1.0.0",
+  "authors": [
+    "Robert Sikora <rsikora@pgs-soft.com>"
+  ],
+  "description": "Basic resources for TestApp",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "handlebars": "~3.0.0",
+    "alertify.js": "~0.3.11"
+  }
+}
