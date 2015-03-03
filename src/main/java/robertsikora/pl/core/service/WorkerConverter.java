@@ -18,13 +18,9 @@ public class WorkerConverter {
 
     private final static DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
 
-    private Validator workerValidator;
-
     @Autowired
     @Qualifier("workerValidator")
-    public void setWorkerValidator(Validator validator){
-        this.workerValidator = validator;
-    }
+    private Validator workerValidator;
 
     public Worker convert(String csvLine, String separator){
 

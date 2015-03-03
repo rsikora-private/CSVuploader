@@ -1,7 +1,10 @@
 package robertsikora.pl.core.service
 
 import org.joda.time.format.DateTimeFormat
+import org.springframework.test.util.ReflectionTestUtils
+import robertsikora.pl.core.repository.WorkerDAO
 import robertsikora.pl.web.validator.FileSchemaValidatorImpl
+import robertsikora.pl.web.validator.Validator
 import robertsikora.pl.web.validator.WorkerValidatorImpl
 import spock.lang.Specification
 
@@ -17,11 +20,13 @@ class WorkerServiceTest extends Specification {
 
     def setup(){
         inputStream = TestUtils.loadSampleFile()
-        workerService = new WorkerService();
-        workerService.schemaValidator = Stub(FileSchemaValidatorImpl)
+
+        Validator workerValidator = Stub(WorkerValidatorImpl)
         WorkerConverter workerConverter = new WorkerConverter()
-        workerConverter.workerValidator = Stub(WorkerValidatorImpl)
-        workerService.workerConverter = workerConverter;
+        ReflectionTestUtils.setField(workerConverter, "workerValidator", workerValidator)
+        WorkerDAO workerDAO = Stub(WorkerDAO)
+        workerService = new WorkerService(workerConverter, workerDAO);
+        ReflectionTestUtils.setField(workerService, "schemaValidator", Stub(FileSchemaValidatorImpl))
     }
 
     def "Testing preparePreview"() {

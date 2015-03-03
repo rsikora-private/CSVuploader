@@ -1,6 +1,7 @@
 package robertsikora.pl.core.service
 
 import org.joda.time.format.DateTimeFormat
+import org.springframework.test.util.ReflectionTestUtils
 import robertsikora.pl.web.validator.WorkerValidatorImpl
 import spock.lang.Specification
 
@@ -16,8 +17,7 @@ class WorkerConverterTest extends Specification {
 
         given:
             String workerStr = "Robert,Sikora,85041717600,17-04-1985,robertsikora@interia.pl"
-            workerConverter.workerValidator = Stub(WorkerValidatorImpl)
-
+            ReflectionTestUtils.setField(workerConverter, "workerValidator", Stub(WorkerValidatorImpl))
         when:
             def result = workerConverter.convert(workerStr, ",")
 

@@ -23,21 +23,16 @@ public class WorkerService {
     private final static String CSV_SEPARATOR = ",";
     private final static byte PREVIEW_LIMIT = 10;
 
-    private WorkerConverter workerConverter;
-    private WorkerDAO workerDAO;
-    private Validator schemaValidator;
+    private final WorkerConverter workerConverter;
+    private final WorkerDAO workerDAO;
 
     @Autowired
     @Qualifier("schemaValidator")
-    public void setSchemaValidator(Validator schemaValidator){
-        this.schemaValidator = schemaValidator;
-    }
+    private Validator schemaValidator;
+
     @Autowired
-    public void setWorkerConverter(WorkerConverter workerConverter) {
+    public WorkerService(WorkerConverter workerConverter, WorkerDAO workerDAO){
         this.workerConverter = workerConverter;
-    }
-    @Autowired
-    public void setWorkerDAO(WorkerDAO workerDAO) {
         this.workerDAO = workerDAO;
     }
 
@@ -87,6 +82,4 @@ public class WorkerService {
             workerDAO.save(worker);
 
     }
-
-
 }
