@@ -87,6 +87,23 @@ public class Worker {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Worker worker = (Worker) o;
+
+        if (ssn != null ? !ssn.equals(worker.ssn) : worker.ssn != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return ssn != null ? ssn.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "Worker{" +
                 "firstName='" + firstName + '\'' +

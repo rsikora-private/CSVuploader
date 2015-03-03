@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.transaction.annotation.Transactional
 import robertsikora.pl.config.TestConfiguration
+import robertsikora.pl.core.model.Worker
 import robertsikora.pl.core.repository.WorkerDAO
+import robertsikora.pl.core.util.CSVReader
 import spock.lang.Specification
 
 /**
@@ -23,29 +25,45 @@ import spock.lang.Specification
 @Transactional
 class WorkerServiceIntegrationTest extends Specification {
 
-    InputStream inputStream
+    InputStream inputStream1
+    InputStream inputStream2
     @Autowired
     WorkerService workerService
+    @Autowired
+    WorkerConverter workerConverter
     @Autowired
     WorkerDAO workerDAO
 
     @Before
     public void executedBeforeEach(){
-        inputStream = TestUtils.loadSampleFile()
+        inputStream1 = TestUtils.loadSampleFile()
+        inputStream2 = TestUtils.loadSampleFile()
     }
 
     @Test
     def testImportWorkers() {
+        given:
+            CSVReader csvReader = new CSVReader(inputStream1, true)
         when:
-            workerService.importWorkers(inputStream)
+            workerService.importWorkers(inputStream2)
             def result = workerDAO.findAll()
+            def fileWorkers = new ArrayList<>()
+
+            while(csvReader.hasNext()){
+                String csvLine = csvReader.next();
+                Worker worker = workerConverter.convert(csvLine, ",")
+                fileWorkers.add(worker);
+            }
+
         then:
-            result.size() == 12
+            result.size() == fileWorkers.size()
+            result.sort() == fileWorkers.sort()
     }
 
     @After
     public void cleanupMess() {
-        workerDAO.deleteAll();
-        inputStream.close()
+        workerDAO.deleteAll()
+        inputStream1.close()
+        inputStream2.close()
     }
 }
