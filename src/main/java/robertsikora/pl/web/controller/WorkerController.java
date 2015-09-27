@@ -28,7 +28,7 @@ public class WorkerController {
     private final WorkerService workerService;
 
     @Autowired
-    public WorkerController(WorkerService workerService){
+    public WorkerController(final WorkerService workerService){
         this.workerService = workerService;
     }
 
@@ -37,8 +37,7 @@ public class WorkerController {
             method= RequestMethod.POST)
 
     public @ResponseBody
-    Collection<Worker> uploadPreview (@RequestParam("file") MultipartFile file){
-
+    Collection<Worker> uploadPreview (@RequestParam("file") final MultipartFile file){
         fileValidator.validate(file);
         return workerService.preparePreview(Utils.convertToInputStream(file));
     }
@@ -47,10 +46,8 @@ public class WorkerController {
             method= RequestMethod.POST)
 
     public @ResponseBody
-    void importWorkers(@RequestParam("file") MultipartFile file){
-
+    void importWorkers(@RequestParam("file") final MultipartFile file){
         fileValidator.validate(file);
          workerService.importWorkers(Utils.convertToInputStream(file));
     }
-
 }

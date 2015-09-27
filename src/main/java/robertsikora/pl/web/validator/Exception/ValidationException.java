@@ -5,7 +5,7 @@ package robertsikora.pl.web.validator.Exception;
  */
 public class ValidationException extends RuntimeException {
 
-    public ValidationException(String message){
+    public ValidationException(final String message){
         super(message);
     }
 }

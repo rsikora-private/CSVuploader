@@ -13,8 +13,8 @@ public final class Utils {
     private Utils(){
     }
 
-    public static InputStream convertToInputStream(MultipartFile file){
-        InputStream in=null;
+    public static InputStream convertToInputStream(final MultipartFile file){
+        InputStream in;
         try{
             in = file.getInputStream();
         }catch (IOException e){

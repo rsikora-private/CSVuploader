@@ -6,9 +6,7 @@ import org.springframework.core.io.Resource
 class TestUtils {
 
     public static InputStream loadSampleFile(){
-
-        Resource resource = new ClassPathResource("sample.csv");
-        InputStream resourceInputStream = resource.getInputStream();
-        return resourceInputStream;
+        final Resource resource = new ClassPathResource("sample.csv");
+        return resource.getInputStream();
     }
 }

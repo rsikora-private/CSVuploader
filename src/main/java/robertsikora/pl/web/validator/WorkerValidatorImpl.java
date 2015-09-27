@@ -16,22 +16,21 @@ import java.util.Set;
 
 @Component(value="workerValidator")
 public class WorkerValidatorImpl implements Validator<Worker> {
+
+    private final static String MESSAGE = "Wrong worker data. Field '%s' should be: '%s' <br>";
+
     @Override
-    public void validate(Worker obj, Errors... errors) {
-
-        StringBuilder str = new StringBuilder();
-
-        Set<ConstraintViolation<Worker>> errorSet = Validation.buildDefaultValidatorFactory().getValidator().validate(obj);
-        Iterator<ConstraintViolation<Worker>> iter = errorSet.iterator();
-
+    public void validate(final Worker obj, final Errors... errors) {
+        final StringBuilder str = new StringBuilder();
+        final Set<ConstraintViolation<Worker>> errorSet = Validation.buildDefaultValidatorFactory().getValidator().validate(obj);
+        final Iterator<ConstraintViolation<Worker>> iter = errorSet.iterator();
         while (iter.hasNext()){
             ConstraintViolation<Worker> constraintViolation = iter.next();
-            str.append(String.format("Wrong worker data. Field '%s' should be: '%s' <br><br>",
+            str.append(String.format(MESSAGE,
                     constraintViolation.getPropertyPath(), constraintViolation.getMessage()));
         }
-
-        if (str.length() >0)
+        if (str.length() >0) {
             throw new ValidationException(str.toString());
-
+        }
     }
 }

@@ -5,7 +5,6 @@ import robertsikora.pl.core.model.Worker;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Collection;
 
 /**
@@ -18,17 +17,15 @@ public class WorkerDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void save(Worker worker){
+    public void save(final Worker worker){
         entityManager.persist(worker);
     }
 
     public Collection<Worker> findAll(){
-        Query query = entityManager.createQuery("FROM Worker");
-        return (Collection<Worker>) query.getResultList();
+        return entityManager.createQuery("FROM Worker").getResultList();
     }
 
-    public void deleteAll(){
-        Query query = entityManager.createQuery ("DELETE FROM Worker");
-        query.executeUpdate();
+    public int deleteAll(){
+        return entityManager.createQuery ("DELETE FROM Worker").executeUpdate();
     }
 }

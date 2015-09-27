@@ -19,18 +19,18 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity handleValidationException(ValidationException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity handleConstraintViolationException(DataIntegrityViolationException ex) {
-        return new ResponseEntity<>("SSN must be unique. You attempt to store duplicated data", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("SSN must be unique. You attempt to store duplicated data", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleGeneralException(Exception ex) {
         //TO-DO use more professional logger
         Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
-        return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

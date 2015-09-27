@@ -13,14 +13,16 @@ import robertsikora.pl.web.validator.Exception.ValidationException;
 @Component(value="fileValidator")
 public class FileValidatorImpl implements Validator<MultipartFile> {
 
+    private final static String CHOOSE_FILE_MESSAGE = "Please choose file";
+    private final static String EMPTY_FILE_MESSAGE = "The file is empty";
+
     @Override
-    public void validate(MultipartFile obj, Errors ... errors) {
-
-        if(StringUtils.isEmpty(obj.getOriginalFilename()))
-            throw new ValidationException("Please choose file");
-
-        if(obj.getSize() == 0)
-            throw new ValidationException("The file is empty");
-
+    public void validate(final MultipartFile obj, final Errors ... errors) {
+        if(StringUtils.isEmpty(obj.getOriginalFilename())) {
+            throw new ValidationException(CHOOSE_FILE_MESSAGE);
+        }
+        if(obj.getSize() == 0) {
+            throw new ValidationException(EMPTY_FILE_MESSAGE);
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import robertsikora.pl.core.model.Worker;
 import robertsikora.pl.core.repository.WorkerDAO;
 import robertsikora.pl.core.util.CSVReader;
@@ -31,22 +32,22 @@ public class WorkerService {
     private Validator schemaValidator;
 
     @Autowired
-    public WorkerService(WorkerConverter workerConverter, WorkerDAO workerDAO){
+    public WorkerService(final WorkerConverter workerConverter, final WorkerDAO workerDAO){
         this.workerConverter = workerConverter;
         this.workerDAO = workerDAO;
     }
 
     public Collection<Worker> preparePreview(InputStream inputStream){
+        Assert.notNull(inputStream);
 
-        CSVReader csvReader = new CSVReader(inputStream, false);
-        Collection<Worker> workers = new ArrayList<>();
+        final CSVReader csvReader = new CSVReader(inputStream, false);
+        final Collection<Worker> workers = new ArrayList<Worker>();
 
-        byte idx = 0;
+        int idx = 0;
         while(csvReader.hasNext()
                 && idx <=PREVIEW_LIMIT){
-
-            String csvLine = csvReader.next();
-            if(idx==0){
+            final String csvLine = csvReader.next();
+            if(idx == 0){
                 ++idx;
                 schemaValidator.validate(csvLine);
                 continue;
@@ -55,20 +56,20 @@ public class WorkerService {
             Worker worker = workerConverter.convert(csvLine, CSV_SEPARATOR);
             workers.add(worker);
         }
-
         return workers;
     }
 
     @Transactional
-    public void importWorkers(InputStream inputStream){
+    public void importWorkers(final InputStream inputStream){
+        Assert.notNull(inputStream);
 
-        CSVReader csvReader = new CSVReader(inputStream, false);
-        Collection<Worker> workers = new ArrayList<>();
+        final CSVReader csvReader = new CSVReader(inputStream, false);
+        final Collection<Worker> workers = new ArrayList<Worker>();
 
         int idx = 0;
         while(csvReader.hasNext()){
-            String csvLine = csvReader.next();
-            if(idx==0){
+            final String csvLine = csvReader.next();
+            if(idx == 0){
                 ++idx;
                 schemaValidator.validate(csvLine);
                 continue;
@@ -78,8 +79,8 @@ public class WorkerService {
             workers.add(worker);
         }
 
-        for(Worker worker : workers)
+        for(Worker worker : workers) {
             workerDAO.save(worker);
-
+        }
     }
 }

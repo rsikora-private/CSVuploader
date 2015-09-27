@@ -20,7 +20,7 @@ import java.util.List;
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter{
 
-	private final static int MAX_UPLOAD_FILE_SIZE = 500_000;
+	private final static int MAX_UPLOAD_FILE_SIZE = 500000;
 
 	@Bean
 	public ViewResolver getViewResolver(){

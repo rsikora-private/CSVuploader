@@ -12,19 +12,19 @@ import robertsikora.pl.web.validator.Exception.ValidationException;
 public class FileSchemaValidatorImpl implements Validator<String>{
 
     private final static String[] SCHEMA = {"First Name", "Last Name", "SSN", "DOB", "E-mail"};
+    private final static String MESSAGE = "Wrong file schema. Should be '%s' whilst there is '%s' </br>";
 
     @Override
-    public void validate(String obj, Errors... errors) {
-
-        StringBuilder str = new StringBuilder();
-
-        String [] schema = obj.split(",");
-        for(int i=0; i< SCHEMA.length; i++){
-            if(!SCHEMA[i].equals(schema[i]))
-                str.append(String.format("Wrong file schema. Should be '%s' whilst there is '%s' <br><br>", SCHEMA[i], schema[i]));
+    public void validate(final String obj, final Errors... errors) {
+        final StringBuilder str = new StringBuilder();
+        final String [] schema = obj.split(",");
+        for(int i = 0; i< SCHEMA.length; i++){
+            if(!SCHEMA[i].equals(schema[i])) {
+                str.append(String.format(MESSAGE, SCHEMA[i], schema[i]));
+            }
         }
-
-        if(str.length() >0)
+        if(str.length() >0) {
             throw new ValidationException(str.toString());
+        }
     }
 }
